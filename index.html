@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام عيادة الأسنان المتطور</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --bg: #f8f9fa;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 20px; }
+        .container { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: right; border-bottom: 1px solid #eee; }
+        th { background-color: #f1f1f1; }
+        
+        .service-row:hover { background-color: #fcfcfc; }
+        input[type="checkbox"] { transform: scale(1.5); cursor: pointer; }
+        select { padding: 5px; border-radius: 5px; border: 1px solid #ccc; width: 60px; }
+
+        .summary-box { margin-top: 30px; background: #eef2f7; padding: 20px; border-radius: 10px; }
+        .summary-item { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1.1em; }
+        .final-total { color: #27ae60; font-weight: bold; font-size: 1.4em; border-top: 2px solid #ccc; pt: 10px; }
+        
+        .btn-calc { width: 100%; padding: 15px; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 1.2em; cursor: pointer; margin-top: 15px; }
+        .btn-calc:hover { background: #2980b9; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🦷 نظام إعداد الخطة العلاجية</h2>
+    
+    <table id="servicesTable">
+        <thead>
+            <tr>
+                <th>اختيار</th>
+                <th>الخدمة</th>
+                <th>السعر (SAR)</th>
+                <th>العدد</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="service-row">
+                <td><input type="checkbox" class="service-check" data-price="300"></td>
+                <td>الكشف مع خطة علاجية</td>
+                <td>300</td>
+                <td><select class="service-qty"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+            </tr>
+            <tr class="service-row">
+                <td><input type="checkbox" class="service-check" data-price="700"></td>
+                <td>أشعة بانورامية وثلاثية الأبعاد</td>
+                <td>700</td>
+                <td><select class="service-qty"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+            </tr>
+            <tr class="service-row">
+                <td><input type="checkbox" class="service-check" data-price="500"></td>
+                <td>3D ماسح ضوئي</td>
+                <td>500</td>
+                <td><select class="service-qty"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+            </tr>
+            <tr class="service-row">
+                <td><input type="checkbox" class="service-check" data-price="19"></td>
+                <td>تنظيف الأسنان</td>
+                <td>19</td>
+                <td><select class="service-qty"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+            </tr>
+            <tr class="service-row">
+                <td><input type="checkbox" class="service-check" data-price="72"></td>
+                <td>الحشوة التجميلية</td>
+                <td>72</td>
+                <td><select class="service-qty"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+            </tr>
+            <tr class="service-row">
+                <td><input type="checkbox" class="service-check" data-price="330"></td>
+                <td>تلبيسة زيركون</td>
+                <td>330</td>
+                <td><select class="service-qty"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+            </tr>
+            <tr class="service-row">
+                <td><input type="checkbox" class="service-check" data-price="560"></td>
+                <td>علاج عصب</td>
+                <td>560</td>
+                <td><select class="service-qty"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+            </tr>
+            <tr class="service-row">
+                <td><input type="checkbox" class="service-check" data-price="1400"></td>
+                <td>الزراعة (الشق الجراحي)</td>
+                <td>1400</td>
+                <td><select class="service-qty"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button class="btn-calc" onclick="updateInvoice()">حساب المجموع النهائي</button>
+
+    <div class="summary-box">
+        <div class="summary-item">
+            <span>المجموع الأصلي:</span>
+            <span id="totalOriginal">0 ريال</span>
+        </div>
+        <div class="summary-item" style="color: #e74c3c;">
+            <span>مبلغ الخصم (70%):</span>
+            <span id="totalDiscount">0 ريال</span>
+        </div>
+        <div class="summary-item final-total">
+            <span>المطلوب دفعه:</span>
+            <span id="totalFinal">0 ريال</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateInvoice() {
+        let totalOriginal = 0;
+        const rows = document.querySelectorAll('.service-row');
+        
+        rows.forEach(row => {
+            const checkbox = row.querySelector('.service-check');
+            const qtySelect = row.querySelector('.service-qty');
+            
+            if (checkbox.checked) {
+                const price = parseFloat(checkbox.getAttribute('data-price'));
+                const qty = parseInt(qtySelect.value);
+                totalOriginal += (price * qty);
+            }
+        });
+
+        const discountAmount = totalOriginal * 0.70;
+        const finalPrice = totalOriginal - discountAmount;
+
+        document.getElementById('totalOriginal').innerText = totalOriginal.toLocaleString() + " ريال";
+        document.getElementById('totalDiscount').innerText = "- " + discountAmount.toLocaleString() + " ريال";
+        document.getElementById('totalFinal').innerText = finalPrice.toLocaleString() + " ريال";
+    }
+</script>
+
+</body>
+</html>
